@@ -1,43 +1,48 @@
 use super::clo::CLO;
 
+/// Type A = no pass requirement
+/// Type B = 70% minimum
+/// Type B+ = 50% minimum
+/// Type C = no pass requirement
 #[derive(Debug, Clone)]
-pub enum difficulty_type {
+pub enum DifficultyType {
     TypeA,
     TypeB,
     TypeBPlus,
     TypeC,
 }
 
-/// Type A = no pass requirement
-/// Type B = 70% minimum
-/// Type B+ = 50% minimum
-/// Type C = no pass requirement
-pub fn pass_fall_check_per_difficulty(grade: u32, difficulty_type: difficulty_type) -> bool {
-    match difficulty_type {
-        difficulty_type::TypeA => true,
-        difficulty_type::TypeB => grade >= 70,
-        difficulty_type::TypeBPlus => grade >= 50,
-        difficulty_type::TypeC => true,
-    }
-}
-
-pub struct subject {
+pub struct Subject {
     name: String,
-    CLOs: Vec<CLO>,
+    clos: Vec<CLO>,
 }
 
-impl subject {
-    pub fn new(name: String) -> subject {
-        subject { name, CLOs: Vec::new() }
+impl Subject {
+    pub fn new(name: String) -> Subject {
+        Subject { name, clos: Vec::new() }
     }
 
-    pub fn add_clo(&mut self, name: f32, difficulty_type: difficulty_type) {
-        let clo_to_be_added = CLO::new(name, difficulty_type);
-        self.CLOs.push(clo_to_be_added);
+    pub fn add_clo(&mut self, name: f32, difficulty_type: DifficultyType, weight_in_subject: f32) {
+        let clo_to_be_added = CLO::new(name, difficulty_type, weight_in_subject);
+        self.clos.push(clo_to_be_added);
     }
 
-    pub fn get_clos(&self) -> &Vec<CLO> {
-        &self.CLOs
+    pub fn get_clos(&mut self) -> &mut Vec<CLO> {
+        &mut self.clos
+    }
+
+    /// calculate the weighted average of each of the CLOs
+    /// and determine if the class is passed or not
+    pub fn get_subject_grade(&self) -> f32 {
+        let mut grade = 0.0;
+        for mut i in self.clos.clone() {
+            let clo_grade = i.get_clo_grade();
+            let clo_weight = i.get_clo_grade() * 0.01;
+
+            grade += clo_grade * clo_weight;
+        }
+
+        grade
     }
 }
 

@@ -1,9 +1,9 @@
-use super::subject::difficulty_type;
+use super::subject::DifficultyType;
 
 #[derive(Debug, Clone)]
 pub struct RLO {
     name: f32,
-    difficulty_type: difficulty_type,
+    difficulty_type: DifficultyType,
     /// The assignment grades are individual 
     /// percentages as entered by the user
     assignment_grades: Vec<f32>,
@@ -11,8 +11,8 @@ pub struct RLO {
 }
 
 impl RLO {
-    pub fn new(name: f32, difficulty_type: difficulty_type, weight_in_clo: f32) -> Self {
-        return RLO { name, difficulty_type, assignment_grades: Vec::new(), weight_in_clo }
+    pub fn new(name: f32, difficulty_type: DifficultyType, weight_in_clo: f32) -> Self {
+        RLO { name, difficulty_type, assignment_grades: Vec::new(), weight_in_clo }
     }
 
     pub fn add_assignment_grade(&mut self, grade: f32) {
@@ -35,7 +35,7 @@ impl RLO {
                 grade = (grade + assignment_grade) / 2.0;
             }
         }
-        return grade;
+        grade
     }
 
     pub fn get_rlo_weight(&self) -> f32 {
