@@ -9,6 +9,15 @@ fn main() {
     let subjects;
 
     if args.len() == 2 {
+            if args.last().unwrap() == "-h" || args.last().unwrap() == "--help" {
+            eprintln!("Usage: usask-cba-calc [file_path]\n");
+            eprintln!("Arguments:");
+            eprintln!("    [file_path]  Path to file containing JSON data.\n");
+            eprintln!("If no file path is provided, the program will read from stdin.");
+            eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
+            eprintln!("{:?}", env!("CARGO_PKG_AUTHORS"));
+            std::process::exit(0);
+        }
         // If exactly one argument is provided, treat it as a file path.
         let file_path = &args[1];
         subjects = read_and_parse_file(file_path.to_string());
