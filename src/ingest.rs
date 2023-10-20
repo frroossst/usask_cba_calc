@@ -41,7 +41,7 @@ pub fn read_and_parse_file(file_path: String) -> Result<Box<Vec<Subject>>, Schem
 
 /// parse json from string and return a workable 
 /// type 
-fn parse_json_data(content: String) -> Value {
+pub fn parse_json_data(content: String) -> Value {
     return serde_json::from_str(content.as_str()).expect("Error parsing json");
 }
 

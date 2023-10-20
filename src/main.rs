@@ -16,10 +16,8 @@ fn main() {
         // If no or more than one argument is provided, read from stdin (piped input).
         let mut input_data = String::new();
         io::stdin().read_to_string(&mut input_data).expect("Failed to read from stdin");
-        subjects = read_and_parse_file(input_data);
+        subjects = populate_json_data(parse_json_data(input_data));
     }
-
-    println!("{:#?}", subjects);
 
     for i in subjects.unwrap().into_iter() {
         println!("Subject: {}, Grade: {}", i.name, i.get_subject_grade());
