@@ -1,12 +1,9 @@
-use serde_json::Value;
-use crate::clo;
-
 use super::subject::{DifficultyType, Subject};
-use super::clo::CLO;
-use super::rlo::RLO;
-use core::fmt;
 use std::{fs::File, io::Read};
+use serde_json::Value;
 use std::error::Error;
+use core::fmt;
+
 
 #[derive(Debug)]
 pub struct SchemaError {
@@ -29,7 +26,7 @@ impl Error for SchemaError {}
 
 pub type SchemaResult<T> = std::result::Result<T, SchemaError>;
 
-pub fn read_and_parse_file(file_path: String) -> SchemaResult<()> {
+pub fn read_and_parse_file(file_path: String) -> Result<Box<Vec<Subject>>, SchemaError> {
     let mut fobj = match File::open(file_path.clone()) {
         Ok(fobj) => fobj,
         Err(e) => panic!("Error opening file: {}", e),
@@ -39,9 +36,7 @@ pub fn read_and_parse_file(file_path: String) -> SchemaResult<()> {
 
     fobj.read_to_string(&mut content).expect("Error reading file");
 
-    populate_json_data(parse_json_data(content));
-
-    Ok(())
+    populate_json_data(parse_json_data(content))
 }
 
 /// parse json from string and return a workable 
@@ -83,7 +78,6 @@ pub fn populate_json_data(parsed_data: Value) -> SchemaResult<Box<Vec<Subject>>>
                 // get all rlos
                 let rlos = clo_key.1.get("RLOs").unwrap().as_object().unwrap();
                 for rlo_key in rlos {
-                    println!("{:?}", rlo_key);
                     let curr_rlo_name = rlo_key.0.parse::<f32>().unwrap();
                     let curr_rlo_weight = rlo_key.1.get("weightage").unwrap().as_f64().unwrap() as f32;
 
@@ -104,8 +98,6 @@ pub fn populate_json_data(parsed_data: Value) -> SchemaResult<Box<Vec<Subject>>>
             }
             subjects.push(curr_sub);
         }
-
-        println!("{:#?}", subjects);
 
         Ok(Box::new(subjects))
     }
