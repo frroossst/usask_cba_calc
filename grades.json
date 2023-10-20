@@ -1,0 +1,55 @@
+{
+    "Subject1": {
+        "CLOs": {
+            "1.1": {
+                "difficulty_level": "B",
+                "weightage": 20,
+                "RLOs": {
+                    "1.3": {
+                        "weightage": 50,
+                        "assignments": [95, 90, 85]
+                    },
+                    "3.3": {
+                        "weightage": 50,
+                        "assignments": [80, 75]
+                    }
+                }
+            },
+            "1.2": {
+                "difficulty_level": "B+",
+                "weightage": 80,
+                "RLOs": {
+                    "1.1": {
+                        "weightage": 50,
+                        "assignments": [95, 90, 85]
+                    }
+                }
+            }
+        }
+    },
+    "Subject2": {
+        "CLOs": {
+            "2.1": {
+                "difficulty_level": "A",
+                "weightage": 0,
+                "RLOs": {
+                    "2.0": {
+                        "weightage": 100,
+                        "assignments": [12]
+                    }
+                }
+            },
+            "1.2": {
+                "difficulty_level": "B+",
+                "weightage": 100,
+                "RLOs": {
+                    "1.1": {
+                        "weightage": 100,
+                        "assignments": [95, 90, 85]
+                    }
+                }
+            }
+        }
+    }
+}
+
