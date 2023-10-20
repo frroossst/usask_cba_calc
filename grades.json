@@ -45,7 +45,7 @@
                 "RLOs": {
                     "2.2": {
                         "weightage": 100.0,
-                        "assignments": [95, 90, 85]
+                        "assignments": [95, 0, 0]
                     }
                 }
             }

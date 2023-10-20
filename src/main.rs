@@ -13,9 +13,9 @@ fn main() {
             eprintln!("Usage: usask-cba-calc [file_path]\n");
             eprintln!("Arguments:");
             eprintln!("    [file_path]  Path to file containing JSON data.\n");
-            eprintln!("If no file path is provided, the program will read from stdin.");
+            eprintln!("If no file path is provided, the program will read from stdin.\n\n");
+            eprintln!("{}\n", env!("CARGO_PKG_DESCRIPTION"));
             eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
-            eprintln!("{:?}", env!("CARGO_PKG_AUTHORS"));
             std::process::exit(0);
         }
         // If exactly one argument is provided, treat it as a file path.
@@ -29,6 +29,13 @@ fn main() {
     }
 
     for i in subjects.unwrap().into_iter() {
-        println!("Subject: {}, Grade: {}", i.name, i.get_subject_grade());
+        let subject_grade = i.get_subject_grade();
+        if subject_grade <= 50.0 {
+            println!("Subject: {}, Grade: FAIL", i.name);
+        }
+        else {
+            println!("Subject: {}, Grade: {}", i.name, subject_grade);
+        }
     }
 }
+
