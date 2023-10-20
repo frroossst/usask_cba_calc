@@ -1,9 +1,19 @@
 [package]
-name = "grade_calculator"
-version = "0.1.0"
+name = "usask_cba_calc"
+version = "0.2.0"
 edition = "2021"
+description = "cli tool to calculate usask's first year engineering cba grades"
+license = "MIT"
+authors = ["Adhyan H. <adhyanpatel@gmail.com>"]
+repository = "https://github.com/frroossst/usask_cba_calc"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 serde_json = "1.0.107"
+clap = { version = "4.4.6", features = ["derive"] }
+
+[profile.release]
+strip = true
+opt-level = "z"
+lto = true
