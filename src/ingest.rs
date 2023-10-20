@@ -1,5 +1,7 @@
 use serde_json::Value;
-use crate::subject::{Subject, self};
+use super::subject::Subject;
+use super::clo::CLO;
+use super::rlo::RLO;
 use core::fmt;
 use std::{fs::File, io::Read};
 use std::error::Error;
@@ -53,12 +55,25 @@ fn parse_json_data(content: String) -> Value {
     subject.get_clos()[0].get_rlos()[0].add_assignment_grade(100.0);
  */
 pub fn populate_json_data(parsed_data: Value) -> SchemaResult<()> {
-    if let Value::Object(obj) = parsed_data {
+    if let Value::Object(ref obj) = parsed_data {
+        let mut subjects: Vec<Subject> = Vec::new();
         // Get all keys as a vector
         let subject_keys: Vec<&str> = obj.keys().map(|k| k.as_str()).collect();
 
+        // get all subjects
         for subject_key in subject_keys {
-            println!("{:?}", subject_key)
+            let curr_sub = Subject::new(subject_key.to_string());
+            // get all clos
+            let clos = obj.get(subject_key).unwrap().as_object().unwrap();
+            for clo_key in clos {
+                let all_clos = clos.get(clo_key.0).unwrap().as_object().unwrap();
+                // let curr_clo = CLO::new(clo_key.0.to_string());
+                for rlo_key in all_clos {
+                    println!("{:?}", rlo_key.1);
+                    println!("\n\n\n");
+                }
+            }
+            subjects.push(curr_sub);
         }
 
         Ok(())
