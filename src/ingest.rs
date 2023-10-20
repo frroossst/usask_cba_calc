@@ -1,5 +1,7 @@
 use serde_json::Value;
-use super::subject::Subject;
+use crate::clo;
+
+use super::subject::{DifficultyType, Subject};
 use super::clo::CLO;
 use super::rlo::RLO;
 use core::fmt;
@@ -54,7 +56,7 @@ fn parse_json_data(content: String) -> Value {
     subject.get_clos()[0].add_rlo(1.1, 100.0);
     subject.get_clos()[0].get_rlos()[0].add_assignment_grade(100.0);
  */
-pub fn populate_json_data(parsed_data: Value) -> SchemaResult<()> {
+pub fn populate_json_data(parsed_data: Value) -> SchemaResult<Box<Vec<Subject>>> {
     if let Value::Object(ref obj) = parsed_data {
         let mut subjects: Vec<Subject> = Vec::new();
         // Get all keys as a vector
@@ -62,21 +64,50 @@ pub fn populate_json_data(parsed_data: Value) -> SchemaResult<()> {
 
         // get all subjects
         for subject_key in subject_keys {
-            let curr_sub = Subject::new(subject_key.to_string());
+            let mut curr_sub = Subject::new(subject_key.to_string());
             // get all clos
-            let clos = obj.get(subject_key).unwrap().as_object().unwrap();
+            let clos = obj.get(subject_key).unwrap().as_object().unwrap().get("CLOs").unwrap().as_object().unwrap();
             for clo_key in clos {
-                let all_clos = clos.get(clo_key.0).unwrap().as_object().unwrap();
-                // let curr_clo = CLO::new(clo_key.0.to_string());
-                for rlo_key in all_clos {
-                    println!("{:?}", rlo_key.1);
-                    println!("\n\n\n");
+                let curr_clo_name = clo_key.0.parse::<f32>().unwrap();
+                let curr_clo_difficulty_type = match clo_key.1.get("difficulty_type").unwrap().as_str() {
+                    Some("A") => DifficultyType::TypeA,
+                    Some("B") => DifficultyType::TypeB,
+                    Some("B+") => DifficultyType::TypeBPlus,
+                    Some("C") => DifficultyType::TypeC,
+                    Some(_) => panic!("Error parsing difficulty type"),
+                    None => panic!("Error parsing difficulty type"),
+                };
+                let curr_clo_weight = clo_key.1.get("weightage").unwrap().as_f64().unwrap() as f32;
+                curr_sub.add_clo(curr_clo_name, curr_clo_difficulty_type, curr_clo_weight);
+
+                // get all rlos
+                let rlos = clo_key.1.get("RLOs").unwrap().as_object().unwrap();
+                for rlo_key in rlos {
+                    println!("{:?}", rlo_key);
+                    let curr_rlo_name = rlo_key.0.parse::<f32>().unwrap();
+                    let curr_rlo_weight = rlo_key.1.get("weightage").unwrap().as_f64().unwrap() as f32;
+
+                    for i in curr_sub.get_clos() {
+                        if i.name == curr_clo_name {
+                            i.add_rlo(curr_rlo_name, curr_rlo_weight);
+                            for j in i.get_rlos() {
+                                if j.name == curr_rlo_name {
+                                    let curr_rlo_assignments = rlo_key.1.get("assignments").unwrap().as_array().unwrap();
+                                    for k in curr_rlo_assignments {
+                                        j.add_assignment_grade(k.as_f64().unwrap() as f32);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
             subjects.push(curr_sub);
         }
 
-        Ok(())
+        println!("{:#?}", subjects);
+
+        Ok(Box::new(subjects))
     }
     else {
         Err(SchemaError::new("unable to index into JSON keys"))

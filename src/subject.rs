@@ -12,8 +12,9 @@ pub enum DifficultyType {
     TypeC,
 }
 
+#[derive(Debug)]
 pub struct Subject {
-    name: String,
+    pub name: String,
     clos: Vec<CLO>,
 }
 

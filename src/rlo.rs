@@ -2,7 +2,7 @@ use super::subject::DifficultyType;
 
 #[derive(Debug, Clone)]
 pub struct RLO {
-    name: f32,
+    pub name: f32,
     difficulty_type: DifficultyType,
     /// The assignment grades are individual 
     /// percentages as entered by the user

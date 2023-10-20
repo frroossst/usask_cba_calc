@@ -3,7 +3,7 @@ use super::rlo::RLO;
 
 #[derive(Debug, Clone)]
 pub struct CLO {
-    name: f32,
+    pub name: f32,
     difficulty_type: DifficultyType,
     rlos: Vec<RLO>,
     weight_in_subject: f32,
