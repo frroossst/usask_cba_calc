@@ -1,0 +1,35 @@
+[GE102]
+
+[GE102.TYPES]
+TYPE_A = ["CLO1"]
+# Achieve at least 70% in the Type B CLOs
+TYPE_B = [ "CLO2", "CLO3"]
+# Achieve at least 50% in the Type B CLOs
+TYPE_BP = [ "CLO4"]
+# Extra credit
+TYPE_C = []
+
+[GE102.CLO1]
+CLO_W = [100]
+RLO_1_1 = [69]
+
+[GE102.CLO2]
+CLO_W = [25, 35, 20, 20]
+RLO_2_1 = [100, 100, 100, 100]
+RLO_2_2 = []
+RLO_2_3 = []
+RLO_2_4 = []
+
+[GE102.CLO3]
+CLO_W = ["20", "25", "15", "20", "20"]
+RLO_3_1 = []
+RLO_3_2 = []
+RLO_3_3 = []
+RLO_3_4 = []
+RLO_3_5 = []
+
+[GE102.CLO4]
+CLO_W = ["50", "50"]
+RLO_4_1 = []
+RLO_4_2 = []
+

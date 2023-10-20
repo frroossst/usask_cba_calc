@@ -1,7 +1,12 @@
 use grade_calculator::subject::{Subject, DifficultyType};
+use grade_calculator::ingest::read_and_parse_file;
 
 fn main() {
     println!("Hello, world!");
+
+    let parsed_data = read_and_parse_file("./grades.toml".to_string());
+
+    println!("{:?}", parsed_data);
 
     let mut subject = Subject::new("MY101".to_string());
 
