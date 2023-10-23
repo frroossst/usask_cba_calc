@@ -14,6 +14,9 @@ fn main() {
             eprintln!("Arguments:");
             eprintln!("    [file_path]  Path to file containing JSON data.\n");
             eprintln!("If no file path is provided, the program will read from stdin.\n\n");
+            eprintln!("Options:");
+            eprintln!("    -h, --help   Prints this message");
+            eprintln!("    -s, --schema Creates a boilerplate schema");
             eprintln!("{}\n", env!("CARGO_PKG_DESCRIPTION"));
             eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
             std::process::exit(0);
@@ -36,12 +39,17 @@ fn main() {
 
     for i in populated_subjects.into_iter() {
         let subject_grade = i.get_subject_grade();
+
         if subject_grade <= 50.0 {
-            println!("Subject: {}, Grade: {}", i.name, Color::Red.bold().paint("FAIL"));
+            println!("{}: {}", i.name, Color::Red.bold().paint("FAIL"));
+        } else if subject_grade <= 60.0 {
+            println!("{}: {}", i.name, Color::Yellow.paint(format!("{:.2}", subject_grade)));
+        } else if subject_grade <= 100.0 {
+            println!("{}: {}", i.name, Color::Green.paint(format!("{:.2}", subject_grade)));
+        } else {
+            println!("{}: {}", i.name, subject_grade);
         }
-        else {
-            println!("Subject: {}, Grade: {}", i.name, Color::Green.paint(format!("{:.2}", subject_grade).to_string()));
-        }
+
     }
 }
 
