@@ -26,6 +26,7 @@ impl Subject {
     pub fn add_clo(&mut self, name: f32, difficulty_type: DifficultyType, weight_in_subject: f32) {
         let clo_to_be_added = CLO::new(name, difficulty_type, weight_in_subject);
         self.clos.push(clo_to_be_added);
+        self.clos.sort();
     }
 
     pub fn get_clos(&mut self) -> &mut Vec<CLO> {

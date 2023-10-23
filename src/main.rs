@@ -28,13 +28,6 @@ fn main() {
 
     let populated_subjects = subjects.unwrap();
 
-    for mut i in populated_subjects.clone().into_iter() {
-        for j in i.get_clos() {
-            j.sort_rlos()
-        }
-        i.sort_clos();
-    }
-
     for i in populated_subjects.into_iter() {
         println!("Subject: {}, \n{:#?}", i.name, i);
         let subject_grade = i.get_subject_grade();

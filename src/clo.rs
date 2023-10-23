@@ -18,6 +18,7 @@ impl CLO {
     pub fn add_rlo(&mut self, name: f32, weight_in_clo: f32) {
         let rlo_to_be_added = RLO::new(name, self.difficulty_type.clone(), weight_in_clo);
         self.rlos.push(rlo_to_be_added);
+        self.rlos.sort();
     }
 
     pub fn get_rlos(&mut self) -> &mut Vec<RLO> {
