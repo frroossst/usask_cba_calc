@@ -26,7 +26,7 @@ fn main() {
             populate_json_data(parse_json_data(input_data))
         };
 
-    let mut populated_subjects = subjects.unwrap();
+    let populated_subjects = subjects.unwrap();
 
     for mut i in populated_subjects.clone().into_iter() {
         for j in i.get_clos() {

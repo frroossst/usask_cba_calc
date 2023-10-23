@@ -42,6 +42,7 @@ impl Subject {
 
             grade += clo_grade * clo_weight;
         }
+        println!("subject {:?} has grade {:?}", self.name, grade);
         grade
     }
 

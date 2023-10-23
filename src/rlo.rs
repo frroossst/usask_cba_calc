@@ -31,7 +31,6 @@ impl RLO {
             if assignment_grade > grade {
                 grade = assignment_grade;
             } else {
-                // NOTE: I am doing a simple average here
                 // TODO: replace with weighted average per class
                 grade = (grade + assignment_grade) / 2.0;
             }
