@@ -1,7 +1,5 @@
 # usask_cba_calc
 
-===
-
 A command-line tool designed to calculate the first-year engineering grades for students at the University of Saskatchewan's College of Engineering. 
 This tool takes an input file in JSON format and provides the calculated GPA and other relevant information. The tool is written in Rust to take advantage
 of Rust's excellent data modelling capabilities.
@@ -35,7 +33,11 @@ usask-cba-calc v0.2.3
 
 1. Open up your terminal or command prompt
 
-2. Type `usask_cba_calc /path/to/file.json` 
+2. Type `usask_cba_calc -s`  
+
+    This will ask you a few questions to generate a boiler plate JSON schema, later open the grades.json file to fill in your grade information
+
+3. Type `usask_cba_calc /path/to/file.json` 
 
 NOTE: You can also pipe in data to the tool.
 
