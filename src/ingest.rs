@@ -105,4 +105,3 @@ pub fn populate_json_data(parsed_data: Value) -> SchemaResult<Box<Vec<Subject>>>
         Err(SchemaError::new("unable to index into JSON keys"))
     }
 }
-

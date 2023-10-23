@@ -79,4 +79,3 @@ pub fn construct_schema() {
     serde_json::to_writer_pretty(fobj, &schema).unwrap();
 
 }
-
