@@ -1,4 +1,5 @@
 use super::subject::DifficultyType;
+use std::cmp::Ordering;
 use super::rlo::RLO;
 
 #[derive(Debug, Clone)]
@@ -32,6 +33,7 @@ impl CLO {
 
             grade += rlo_grade * rlo_weight;
         }
+        println!("clo: {:?} has grade: {:?}", self.name, grade);
         grade
     }
 
@@ -39,5 +41,29 @@ impl CLO {
         self.weight_in_subject
     }
 
+    pub fn sort_rlos(&mut self) {
+        self.rlos.sort_by(|a, b| a.name.partial_cmp(&b.name).unwrap());
+    }
+
 }
 
+impl Ord for CLO {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.partial_cmp(other).unwrap()
+    }
+}
+
+impl Eq for CLO {}
+
+impl PartialEq for CLO {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+
+}
+
+impl PartialOrd for CLO {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.name.partial_cmp(&other.name)
+    }
+}

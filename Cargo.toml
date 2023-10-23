@@ -1,6 +1,6 @@
 [package]
 name = "usask_cba_calc"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 description = "cli tool to calculate usask's first year engineering cba grades"
 license = "MIT"

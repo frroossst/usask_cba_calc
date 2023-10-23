@@ -1,4 +1,5 @@
 use super::subject::DifficultyType;
+use std::cmp::Ordering;
 
 #[derive(Debug, Clone)]
 pub struct RLO {
@@ -35,11 +36,33 @@ impl RLO {
                 grade = (grade + assignment_grade) / 2.0;
             }
         }
+        println!("rlo: {:?} has grade: {:?}", self.name, grade);
         grade
     }
 
     pub fn get_rlo_weight(&self) -> f32 {
         self.weight_in_clo
+    }
+}
+
+impl Ord for RLO {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.partial_cmp(other).unwrap()
+    }
+}
+
+impl Eq for RLO {}
+
+impl PartialEq for RLO {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
+    }
+
+}
+
+impl PartialOrd for RLO {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.name.partial_cmp(&other.name)
     }
 }
 

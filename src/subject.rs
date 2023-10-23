@@ -12,7 +12,7 @@ pub enum DifficultyType {
     TypeC,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Subject {
     pub name: String,
     clos: Vec<CLO>,
@@ -42,8 +42,11 @@ impl Subject {
 
             grade += clo_grade * clo_weight;
         }
-
         grade
+    }
+
+    pub fn sort_clos(&mut self) {
+        self.clos.sort_by(|a, b| a.name.partial_cmp(&b.name).unwrap());
     }
 }
 
