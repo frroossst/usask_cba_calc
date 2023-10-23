@@ -1,5 +1,6 @@
 use usask_cba_calc::ingest::*;
 use std::io::{self, Read};
+use ansi_term::Color;
 
 
 
@@ -15,7 +16,7 @@ fn main() {
             eprintln!("{}\n", env!("CARGO_PKG_DESCRIPTION"));
             eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
             std::process::exit(0);
-            }
+        }
             // If exactly one argument is provided, treat it as a file path.
             let file_path = &args[1];
             read_and_parse_file(file_path.to_string())
@@ -29,13 +30,12 @@ fn main() {
     let populated_subjects = subjects.unwrap();
 
     for i in populated_subjects.into_iter() {
-        println!("Subject: {}, \n{:#?}", i.name, i);
         let subject_grade = i.get_subject_grade();
         if subject_grade <= 50.0 {
-            println!("Subject: {}, Grade: FAIL", i.name);
+            println!("Subject: {}, Grade: {}", i.name, Color::Red.bold().paint("FAIL"));
         }
         else {
-            println!("Subject: {}, Grade: {}", i.name, subject_grade);
+            println!("Subject: {}, Grade: {}", i.name, Color::Green.paint(format!("{:.2}", subject_grade).to_string()));
         }
     }
 }

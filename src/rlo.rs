@@ -35,7 +35,6 @@ impl RLO {
                 grade = (grade + assignment_grade) / 2.0;
             }
         }
-        println!("rlo: {:?} has grade: {:?}", self.name, grade);
         grade
     }
 

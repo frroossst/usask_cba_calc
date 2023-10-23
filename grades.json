@@ -1,4 +1,18 @@
 {
+    "SampleTest" : {
+        "CLOs": {
+            "0.1" : {
+                "difficulty_type": "B",
+                "weightage": 100.0,
+                "RLOs": {
+                    "0.2": {
+                        "weightage": 100.0,
+                        "assignments": [100, 0]
+                    }
+                }
+            }
+        }
+    },
     "Subject1": {
         "CLOs": {
             "1.1": {

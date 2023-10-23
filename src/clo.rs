@@ -34,18 +34,12 @@ impl CLO {
 
             grade += rlo_grade * rlo_weight;
         }
-        println!("clo: {:?} has grade: {:?}", self.name, grade);
         grade
     }
 
     pub fn get_clo_weight(&self) -> f32 {
         self.weight_in_subject
     }
-
-    pub fn sort_rlos(&mut self) {
-        self.rlos.sort_by(|a, b| a.name.partial_cmp(&b.name).unwrap());
-    }
-
 }
 
 impl Ord for CLO {

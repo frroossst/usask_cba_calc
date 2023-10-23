@@ -39,16 +39,11 @@ impl Subject {
         let mut grade = 0.0;
         for mut i in self.clos.clone() {
             let clo_grade = i.get_clo_grade();
-            let clo_weight = i.get_clo_grade() * 0.01;
+            let clo_weight = i.get_clo_weight() * 0.01;
 
             grade += clo_grade * clo_weight;
         }
-        println!("subject {:?} has grade {:?}", self.name, grade);
         grade
-    }
-
-    pub fn sort_clos(&mut self) {
-        self.clos.sort_by(|a, b| a.name.partial_cmp(&b.name).unwrap());
     }
 }
 
