@@ -1,4 +1,5 @@
 use usask_cba_calc::ingest::*;
+use usask_cba_calc::schema::*;
 use std::io::{self, Read};
 use ansi_term::Color;
 
@@ -8,13 +9,17 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
 
     let subjects = if args.len() == 2 {
-            if args.last().unwrap() == "-h" || args.last().unwrap() == "--help" {
+        if args.last().unwrap() == "-h" || args.last().unwrap() == "--help" {
             eprintln!("Usage: usask-cba-calc [file_path]\n");
             eprintln!("Arguments:");
             eprintln!("    [file_path]  Path to file containing JSON data.\n");
             eprintln!("If no file path is provided, the program will read from stdin.\n\n");
             eprintln!("{}\n", env!("CARGO_PKG_DESCRIPTION"));
             eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
+            std::process::exit(0);
+        }
+        else if args.last().unwrap() == "-s" || args.last().unwrap() == "--schema" {
+            construct_schema();
             std::process::exit(0);
         }
             // If exactly one argument is provided, treat it as a file path.
