@@ -8,37 +8,40 @@ fn input() -> String {
     return input_buffer.trim().to_string();
 }
 
-fn prompt(str_to_print: &str) {
-    print!("{}", str_to_print);
+fn prompt(str_to_print: &str, arg: Option<&str>) {
+    match arg {
+        Some(s) => print!("[{}] {}", s, str_to_print),
+        None => print!("{}", str_to_print),
+    }
     io::stdout().flush().unwrap();
 }
 
 pub fn construct_schema() {
     let mut schema = Map::new();
 
-    prompt("Enter number of subjects: ");
+    prompt("Enter number of subjects: ", None);
     let number_of_subjects: u32 = input().trim().parse().expect("Please enter a valid number");
 
     for _ in 0..number_of_subjects {
-        prompt("Enter subject name: ");
+        prompt("Enter subject name: ", None);
         let subject_name = input();
 
-        prompt("Enter number of CLOs: ");
+        prompt("Enter number of CLOs: ", Some(&subject_name));
         let number_of_clos: u32 = input().trim().parse().expect("Please enter a valid number");
 
         let mut clos = Map::new();
 
         for _ in 0..number_of_clos {
-            prompt("Enter CLO name (1.1, 3.2 etc.): ");
+            prompt("Enter CLO name (1.1, 3.2 etc.): ", Some(&subject_name));
             let clo_name = input();
 
-            prompt("Enter number of RLOs: ");
+            prompt("Enter number of RLOs: ", Some(&clo_name));
             let number_of_rlos: u32 = input().trim().parse().expect("Please enter a valid number");
 
             let mut rlos = Map::new();
 
             for _ in 0..number_of_rlos {
-                prompt("Enter RLO name (1.1, 3.2 etc.): ");
+                prompt("Enter RLO name (1.1, 3.2 etc.): ", None);
                 let rlo_name = input();
 
                 rlos.insert(rlo_name.clone(), Value::Object(Map::new()));
@@ -64,12 +67,12 @@ pub fn construct_schema() {
     // if it does and the user says yes, overwrite it
     // if it does and the user says no, then ask for a new file name
     if std::path::Path::new(default_filename).exists() {
-        prompt("file already exists. Overwrite? (y/n): ");
+        prompt("file already exists. Overwrite? (y/n): ", None);
         let overwrite = input();
         if overwrite == "y" || overwrite == "Y" {
             fobj = File::create(default_filename).unwrap();
         } else {
-            prompt("Enter new file name: ");
+            prompt("Enter new file name: ", None);
             let new_file_name = input();
             fobj = File::create(new_file_name).unwrap();
         }
