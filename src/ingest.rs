@@ -2,6 +2,7 @@ use super::subject::{DifficultyType, Subject};
 use std::{fs::File, io::Read};
 use serde_json::Value;
 use std::error::Error;
+use ansi_term::Color;
 use core::fmt;
 
 
@@ -42,7 +43,13 @@ pub fn read_and_parse_file(file_path: String) -> Result<Box<Vec<Subject>>, Schem
 /// parse json from string and return a workable 
 /// type 
 pub fn parse_json_data(content: String) -> Value {
-    return serde_json::from_str(content.as_str()).expect("Error parsing json");
+    match serde_json::from_str(content.as_str()) {
+        Ok(parsed_data) => parsed_data,
+        Err(e) => { 
+            eprintln!("{}", Color::Red.underline().bold().italic().paint("Error parsing JSON file, check format")); 
+            panic!("Error parsing JSON: {}", e); 
+        }
+    }
 }
 
 /*
