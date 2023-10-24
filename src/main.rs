@@ -20,8 +20,7 @@ fn main() {
             eprintln!("{}\n", env!("CARGO_PKG_DESCRIPTION"));
             eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
             std::process::exit(0);
-        }
-        else if args.last().unwrap() == "-s" || args.last().unwrap() == "--schema" {
+        } else if args.last().unwrap() == "-s" || args.last().unwrap() == "--schema" {
             construct_schema();
             std::process::exit(0);
         }
@@ -37,7 +36,7 @@ fn main() {
 
     let populated_subjects = subjects.unwrap();
 
-    for i in populated_subjects.into_iter() {
+    for mut i in populated_subjects.into_iter() {
         let subject_grade = i.get_subject_grade();
 
         if subject_grade <= 50.0 {
@@ -49,6 +48,24 @@ fn main() {
         } else {
             println!("{}: {}", i.name, subject_grade);
         }
+
+        for c in i.get_clos() {
+            let clo_header = format!("[CLO {}]:", c.name);
+            print!("{}", Color::White.italic().paint(clo_header));
+            match c.current_grade {
+                Some(v) => println!(" {}", v),
+                None => println!(" {}", Color::Red.italic().paint("FAIL")),
+            };
+            let rlo_header = format!("    [RLO {}]:", c.name);
+            print!("{}", Color::White.italic().paint(rlo_header));
+            for r in c.get_rlos() {
+                match r.current_grade {
+                    Some(v) => println!(" {}", v),
+                    None => println!(" {}", Color::Red.italic().paint("FAIL")),
+                };
+            }
+        }
+        println!("----------------------------------------");
 
     }
 }

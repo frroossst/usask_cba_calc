@@ -16,11 +16,12 @@ pub enum DifficultyType {
 pub struct Subject {
     pub name: String,
     clos: Vec<CLO>,
+    pub current_grade: Option<f32>,
 }
 
 impl Subject {
     pub fn new(name: String) -> Subject {
-        Subject { name, clos: Vec::new() }
+        Subject { name, clos: Vec::new(), current_grade: None }
     }
 
     pub fn add_clo(&mut self, name: f32, difficulty_type: DifficultyType, weight_in_subject: f32) {
@@ -35,7 +36,7 @@ impl Subject {
 
     /// calculate the weighted average of each of the CLOs
     /// and determine if the class is passed or not
-    pub fn get_subject_grade(&self) -> f32 {
+    pub fn get_subject_grade(&mut self) -> f32 {
         let mut grade = 0.0;
         for mut i in self.clos.clone() {
             let clo_grade = i.get_clo_grade();
@@ -43,7 +44,16 @@ impl Subject {
 
             grade += clo_grade * clo_weight;
         }
+        self.current_grade = self.get_if_subject_pass(grade);
         grade
+    }
+
+    fn get_if_subject_pass(&self, grade: f32) -> Option<f32> {
+        if grade < 50.0 {
+            None
+        } else {
+            Some(grade)
+        }
     }
 }
 

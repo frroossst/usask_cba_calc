@@ -8,11 +8,12 @@ pub struct CLO {
     difficulty_type: DifficultyType,
     rlos: Vec<RLO>,
     weight_in_subject: f32,
+    pub current_grade: Option<f32>,
 }
 
 impl CLO {
     pub fn new(name: f32, difficulty_type: DifficultyType, weight_in_subject: f32) -> Self {
-        CLO { name, difficulty_type, rlos: Vec::new(), weight_in_subject }
+        CLO { name, difficulty_type, rlos: Vec::new(), weight_in_subject, current_grade: None }
     }
 
     pub fn add_rlo(&mut self, name: f32, weight_in_clo: f32) {
@@ -34,7 +35,30 @@ impl CLO {
 
             grade += rlo_grade * rlo_weight;
         }
+        self.current_grade = self.get_if_clo_pass(grade);
         grade
+    }
+
+    fn get_if_clo_pass(&self, grade: f32) -> Option<f32> {
+        return match self.difficulty_type {
+            DifficultyType::TypeB => {
+                if grade < 75.0 {
+                    None
+                }
+                else {
+                    Some(grade)
+                }
+            }
+            DifficultyType::TypeBPlus => {
+                if grade < 50.0 {
+                    None
+                }
+                else {
+                    Some(grade)
+                }
+            }
+            _ => Some(grade)
+        }
     }
 
     pub fn get_clo_weight(&self) -> f32 {
