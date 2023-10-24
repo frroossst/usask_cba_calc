@@ -9,12 +9,12 @@ pub struct RLO {
     /// percentages as entered by the user
     assignment_grades: Vec<f32>,
     weight_in_clo: f32,
-    pub current_grade: Option<f32>,
+    pub current_grade: Result<f32, f32>,
 }
 
 impl RLO {
     pub fn new(name: f32, difficulty_type: DifficultyType, weight_in_clo: f32) -> Self {
-        RLO { name, difficulty_type, assignment_grades: Vec::new(), weight_in_clo, current_grade: None }
+        RLO { name, difficulty_type, assignment_grades: Vec::new(), weight_in_clo, current_grade: Err(f32::NAN) }
     }
 
     pub fn add_assignment_grade(&mut self, grade: f32) {
@@ -40,25 +40,25 @@ impl RLO {
         grade
     }
 
-    fn get_if_rlo_pass(&self, grade: f32) -> Option<f32> {
+    fn get_if_rlo_pass(&self, grade: f32) -> Result<f32, f32> {
         return match self.difficulty_type {
             DifficultyType::TypeB => {
                 if grade < 75.0 {
-                    None
+                    Err(grade)
                 }
                 else {
-                    Some(grade)
+                    Ok(grade)
                 }
             }
             DifficultyType::TypeBPlus => {
                 if grade < 50.0 {
-                    None
+                    Err(grade)
                 }
                 else {
-                    Some(grade)
+                    Ok(grade)
                 }
             }
-            _ => Some(grade)
+            _ => Ok(grade)
         }
     }
 

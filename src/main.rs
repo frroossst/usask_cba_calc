@@ -38,8 +38,7 @@ fn main() {
 
     for mut i in populated_subjects.into_iter() {
         let subject_grade = i.get_subject_grade();
-
-        println!("{:#?}", i);
+        // println!("{:#?}", i);
 
         if subject_grade <= 50.0 {
             println!("{}: {}", i.name, Color::Red.bold().paint("FAIL"));
@@ -55,15 +54,15 @@ fn main() {
             let clo_header = format!("[CLO {}]:", c.name);
             print!("{}", Color::White.italic().paint(clo_header));
             match c.current_grade {
-                Some(v) => println!(" {}", v),
-                None => println!(" {}", Color::Red.italic().paint("FAIL")),
+                Ok(v) => println!(" {}", v),
+                Err(e) => println!(" {}", Color::Red.italic().paint(e.to_string())),
             };
             for r in c.get_rlos() {
                 let rlo_header = format!("    [RLO {}]:", r.name);
                 print!("{}", Color::White.italic().paint(rlo_header));
                 match r.current_grade {
-                    Some(v) => println!(" {}", v),
-                    None => println!(" {}", Color::Red.italic().paint("FAIL")),
+                    Ok(v) => println!(" {}", v),
+                    Err(e) => println!(" {}", Color::Red.italic().paint(e.to_string())),
                 };
             }
         }
