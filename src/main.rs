@@ -56,9 +56,9 @@ fn main() {
                 Some(v) => println!(" {}", v),
                 None => println!(" {}", Color::Red.italic().paint("FAIL")),
             };
-            let rlo_header = format!("    [RLO {}]:", c.name);
-            print!("{}", Color::White.italic().paint(rlo_header));
             for r in c.get_rlos() {
+                let rlo_header = format!("    [RLO {}]:", r.name);
+                print!("{}", Color::White.italic().paint(rlo_header));
                 match r.current_grade {
                     Some(v) => println!(" {}", v),
                     None => println!(" {}", Color::Red.italic().paint("FAIL")),
