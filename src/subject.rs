@@ -38,7 +38,7 @@ impl Subject {
     /// and determine if the class is passed or not
     pub fn get_subject_grade(&mut self) -> f32 {
         let mut grade = 0.0;
-        for mut i in self.clos.clone() {
+        for i in self.get_clos() {
             let clo_grade = i.get_clo_grade();
             let clo_weight = i.get_clo_weight() * 0.01;
 

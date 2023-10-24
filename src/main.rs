@@ -39,6 +39,8 @@ fn main() {
     for mut i in populated_subjects.into_iter() {
         let subject_grade = i.get_subject_grade();
 
+        println!("{:#?}", i);
+
         if subject_grade <= 50.0 {
             println!("{}: {}", i.name, Color::Red.bold().paint("FAIL"));
         } else if subject_grade <= 60.0 {
