@@ -19,33 +19,32 @@ fn prompt(str_to_print: &str, arg: Option<&str>) {
 pub fn construct_schema() {
     let mut schema = Map::new();
 
-    prompt("Enter number of subjects: ", None);
-    let number_of_subjects: u32 = input().trim().parse().expect("Please enter a valid number");
-
-    for _ in 0..number_of_subjects {
-        prompt("Enter subject name: ", None);
+    loop {
+        prompt("Enter subject name or 'q' to quit: ", None);
         let subject_name = input();
-
-        prompt("Enter number of CLOs: ", Some(&subject_name));
-        let number_of_clos: u32 = input().trim().parse().expect("Please enter a valid number");
+        if subject_name == "q" {
+            break;
+        }
 
         let mut clos = Map::new();
 
-        for _ in 0..number_of_clos {
-            prompt("Enter CLO name (1.1, 3.2 etc.): ", Some(&subject_name));
+        loop {
+            prompt("Enter CLO name (1.1, 3.2 etc.) or 'q' to go back to subjects: ", Some(&subject_name));
             let clo_name = input();
-
-            prompt("Enter number of RLOs: ", Some(&clo_name));
-            let number_of_rlos: u32 = input().trim().parse().expect("Please enter a valid number");
+            if clo_name == "q" {
+                break;
+            }
 
             let mut rlos = Map::new();
 
-            for _ in 0..number_of_rlos {
-                prompt("Enter RLO name (1.1, 3.2 etc.): ", None);
+            loop {
+                prompt("Enter RLO name (1.1, 3.2 etc.) or 'q' to go back to CLOs: ", Some(&clo_name));
                 let rlo_name = input();
+                if rlo_name == "q" {
+                    break;
+                }
 
                 rlos.insert(rlo_name.clone(), Value::Object(Map::new()));
-                // rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap().insert("difficulty_type".to_string(), Value::String(String::from("")));
                 rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap().insert("weightage".to_string(), Value::Number(serde_json::Number::from_f64(0.0).unwrap()));
                 rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap().insert("assignments".to_string(), Value::Array(vec![]));
             }
@@ -62,12 +61,9 @@ pub fn construct_schema() {
 
     let fobj;
     let default_filename = "grades.json";
-    // check if the file grades.json exists, if it does, ask if it's okay to overwrite
-    // if it doesn't, create it
-    // if it does and the user says yes, overwrite it
-    // if it does and the user says no, then ask for a new file name
+
     if std::path::Path::new(default_filename).exists() {
-        prompt("file already exists. Overwrite? (y/n): ", None);
+        prompt("File already exists. Overwrite? (y/n): ", None);
         let overwrite = input();
         if overwrite == "y" || overwrite == "Y" {
             fobj = File::create(default_filename).unwrap();
@@ -80,5 +76,5 @@ pub fn construct_schema() {
         fobj = File::create(default_filename).unwrap();
     }
     serde_json::to_writer_pretty(fobj, &schema).unwrap();
-
 }
+
