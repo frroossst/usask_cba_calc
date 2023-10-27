@@ -55,15 +55,15 @@ async fn main() -> () {
             let clo_header = format!("[CLO {}]:", c.name);
             print!("{}", Color::White.italic().paint(clo_header));
             match c.current_grade {
-                Ok(v) => println!(" {}", v),
-                Err(e) => println!(" {}", Color::Red.italic().paint(e.to_string())),
+                Ok(v) => println!(" {:.2}", v),
+                Err(e) => println!(" {}", Color::Red.italic().paint(format!("{:.2}", e.to_string()))),
             };
             for r in c.get_rlos() {
                 let rlo_header = format!("    [RLO {}]:", r.name);
                 print!("{}", Color::White.italic().paint(rlo_header));
                 match r.current_grade {
-                    Ok(v) => println!(" {}", v),
-                    Err(e) => println!(" {}", Color::Red.italic().paint(e.to_string())),
+                    Ok(v) => println!(" {:.2}", v),
+                    Err(e) => println!(" {}", Color::Red.italic().paint(format!("{:.2}", e.to_string()))),
                 };
             }
         }

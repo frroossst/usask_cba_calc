@@ -1,4 +1,5 @@
 use super::subject::DifficultyType;
+use crate::weighted_rlo_grade;
 use std::cmp::Ordering;
 
 #[derive(Debug, Clone)]
@@ -33,7 +34,10 @@ impl RLO {
                 grade = assignment_grade;
             } else {
                 // TODO: replace with weighted average per class
-                grade = (grade + assignment_grade) / 2.0;
+                // [2023] get 60% of curr grade + 40% of new grade
+                // grade = (0.6 * grade) + (0.4 * assignment_grade);
+                grade = weighted_rlo_grade!(grade, assignment_grade);
+                // grade = (grade + assignment_grade) / 2.0;;
             }
         }
         self.current_grade = self.get_if_rlo_pass(grade);
