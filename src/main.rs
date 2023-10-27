@@ -1,24 +1,18 @@
 use usask_cba_calc::ingest::*;
 use usask_cba_calc::schema::*;
-use std::io::{self, Read};
+use usask_cba_calc::misc::*;
+use tokio::time::Duration;
 use ansi_term::Color;
 
 
 
-fn main() {
+#[tokio::main]
+async fn main() -> () {
     let args: Vec<String> = std::env::args().collect();
 
     let subjects = if args.len() == 2 {
         if args.last().unwrap() == "-h" || args.last().unwrap() == "--help" {
-            eprintln!("Usage: usask-cba-calc [file_path]\n");
-            eprintln!("Arguments:");
-            eprintln!("    [file_path]  Path to file containing JSON data.\n");
-            eprintln!("If no file path is provided, the program will read from stdin.\n");
-            eprintln!("Options:");
-            eprintln!("    -h, --help   Prints this message");
-            eprintln!("    -s, --schema Creates a boilerplate schema");
-            eprintln!("\n{}\n", env!("CARGO_PKG_DESCRIPTION"));
-            eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
+            print_help_message();
             std::process::exit(0);
         } else if args.last().unwrap() == "-s" || args.last().unwrap() == "--schema" {
             construct_schema();
@@ -29,8 +23,15 @@ fn main() {
             read_and_parse_file(file_path.to_string())
         } else {
             // If no or more than one argument is provided, read from stdin (piped input).
-            let mut input_data = String::new();
-            io::stdin().read_to_string(&mut input_data).expect("Failed to read from stdin");
+            let input_timeout = Duration::from_millis(2750);
+            let input_data = match read_stdin_with_timeout(input_timeout).await {
+                Ok(v) => v,
+                Err(e) => {
+                    eprintln!("{}", Color::Yellow.underline().paint(format!("{}", e)));
+                    print_help_message();
+                    std::process::exit(124);
+                },
+            };
             populate_json_data(parse_json_data(input_data))
         };
 
