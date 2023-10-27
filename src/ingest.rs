@@ -70,7 +70,7 @@ pub fn populate_json_data(parsed_data: Value) -> SchemaResult<Box<Vec<Subject>>>
             // get all clos
             let clos = obj.get(subject_key).unwrap().as_object().unwrap().get("CLOs").unwrap().as_object().unwrap();
             for clo_key in clos {
-                let curr_clo_name = clo_key.0.parse::<f32>().unwrap();
+                let curr_clo_name = clo_key.0.parse::<f32>().expect("Error parsing CLO name, ensure it is a float");
                 let curr_clo_difficulty_type = match clo_key.1.get("difficulty_type").unwrap().as_str() {
                     Some("A") => DifficultyType::TypeA,
                     Some("B") => DifficultyType::TypeB,
@@ -79,14 +79,14 @@ pub fn populate_json_data(parsed_data: Value) -> SchemaResult<Box<Vec<Subject>>>
                     Some(_) => panic!("Error parsing difficulty type"),
                     None => panic!("Error parsing difficulty type"),
                 };
-                let curr_clo_weight = clo_key.1.get("weightage").unwrap().as_f64().unwrap() as f32;
+                let curr_clo_weight = clo_key.1.get("weightage").unwrap().as_f64().expect("Error parsing CLO weight, ensure it is a float") as f32;
                 curr_sub.add_clo(curr_clo_name, curr_clo_difficulty_type, curr_clo_weight);
 
                 // get all rlos
                 let rlos = clo_key.1.get("RLOs").unwrap().as_object().unwrap();
                 for rlo_key in rlos {
-                    let curr_rlo_name = rlo_key.0.parse::<f32>().unwrap();
-                    let curr_rlo_weight = rlo_key.1.get("weightage").unwrap().as_f64().unwrap() as f32;
+                    let curr_rlo_name = rlo_key.0.parse::<f32>().expect("Error parsing RLO name, ensure it is a float");
+                    let curr_rlo_weight = rlo_key.1.get("weightage").unwrap().as_f64().expect("Error parsing RLO weight, ensure it is a float") as f32;
 
                     for i in curr_sub.get_clos() {
                         if i.name == curr_clo_name {

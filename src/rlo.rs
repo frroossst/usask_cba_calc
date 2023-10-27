@@ -41,7 +41,7 @@ impl RLO {
     }
 
     fn get_if_rlo_pass(&self, grade: f32) -> Result<f32, f32> {
-        return match self.difficulty_type {
+        match self.difficulty_type {
             DifficultyType::TypeB => {
                 if grade < 75.0 {
                     Err(grade)
