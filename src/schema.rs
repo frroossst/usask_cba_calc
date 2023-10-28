@@ -45,18 +45,41 @@ pub fn construct_schema() {
                 }
 
                 rlos.insert(rlo_name.clone(), Value::Object(Map::new()));
-                rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap().insert("weightage".to_string(), Value::Number(serde_json::Number::from_f64(0.0).expect("Expected input to be a f32")));
-                rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap().insert("assignments".to_string(), Value::Array(vec![]));
+                rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap()
+                    .insert(
+                        "weightage".to_string(),
+                        Value::Number(serde_json::Number::from_f64(0.0)
+                                        .expect("Expected input to be a f32")
+                    )
+                );
+                rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap()
+                    .insert(
+                        "assignments".to_string(),
+                        Value::Array(vec![]
+                    )
+                );
             }
 
             clos.insert(clo_name.clone(), Value::Object(Map::new()));
-            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap().insert("difficulty_type".to_string(), Value::String(String::from("")));
-            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap().insert("weightage".to_string(), Value::Number(serde_json::Number::from_f64(0.0).expect("Expected input to be a f32")));
-            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap().insert("RLOs".to_string(), Value::Object(rlos));
+            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap()
+                .insert("difficulty_type".to_string(), Value::String(String::from("")));
+            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap()
+                .insert(
+                    "weightage".to_string(), 
+                    Value::Number(serde_json::Number::from_f64(0.0)
+                                    .expect("Expected input to be a f32")
+                )
+            );
+            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap()
+                .insert(
+                    "RLOs".to_string(), 
+                    Value::Object(rlos)
+            );
         }
 
         schema.insert(subject_name.clone(), Value::Object(Map::new()));
-        schema.get_mut(&subject_name).unwrap().as_object_mut().unwrap().insert("CLOs".to_string(), Value::Object(clos));
+        schema.get_mut(&subject_name).unwrap().as_object_mut().unwrap()
+            .insert("CLOs".to_string(), Value::Object(clos));
     }
 
     let fobj;

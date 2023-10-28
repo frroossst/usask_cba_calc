@@ -15,7 +15,7 @@ pub async fn read_stdin_with_timeout(timeout: Duration) -> Result<String, io::Er
         }
         _ = timeout_future => {
             Err(io::Error::new(io::ErrorKind::TimedOut, 
-                               format!("no input received, waited for {} ms", timeout.as_millis())))
+                    format!("no input received, waited for {} ms", timeout.as_millis())))
         }
     }
 }

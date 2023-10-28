@@ -56,14 +56,19 @@ async fn main() -> () {
             print!("{}", Color::White.italic().paint(clo_header));
             match c.current_grade {
                 Ok(v) => println!(" {:.2}", v),
-                Err(e) => println!(" {}", Color::Red.italic().paint(format!("{:.2}", e.to_string()))),
+                Err(e) => {
+                    println!(" {}", Color::Red.italic().paint(format!("{:.2}", e.to_string())));
+                },
             };
             for r in c.get_rlos() {
                 let rlo_header = format!("    [RLO {}]:", r.name);
                 print!("{}", Color::White.italic().paint(rlo_header));
                 match r.current_grade {
                     Ok(v) => println!(" {:.2}", v),
-                    Err(e) => println!(" {}", Color::Red.italic().paint(format!("{:.2}", e.to_string()))),
+                    Err(e) => {
+                        let rounded_grade = format!("{:.2}", e.to_string());
+                        println!(" {}", Color::Red.italic().paint(rounded_grade));
+                    }
                 };
             }
         }
