@@ -29,19 +29,26 @@ impl RLO {
     /// calculated grade and the new grade
     pub fn get_rlo_grade(&mut self) -> f32 {
         let mut grade: f32 = 0.0;
-        for assignment_grade in self.assignment_grades.clone() {
-            if assignment_grade > grade {
-                grade = assignment_grade;
-            } else {
-                // TODO: replace with weighted average per class
-                // [2023] get 60% of curr grade + 40% of new grade
-                // grade = (0.6 * grade) + (0.4 * assignment_grade);
-                grade = weighted_rlo_grade!(grade, assignment_grade);
-                // grade = (grade + assignment_grade) / 2.0;;
+
+        // Simple average for type Cs
+        if self.difficulty_type == DifficultyType::TypeC {
+            let mut total: f32 = 0.0;
+            for i in self.assignment_grades.clone() {
+                total += i
             }
+            return total / self.assignment_grades.len() as f32;
+        } else {
+            for assignment_grade in self.assignment_grades.clone() {
+                if assignment_grade > grade {
+                    grade = assignment_grade;
+                } else {
+                    grade = weighted_rlo_grade!(grade, assignment_grade);
+                }
+            }
+            self.current_grade = self.get_if_rlo_pass(grade);
+            grade
         }
-        self.current_grade = self.get_if_rlo_pass(grade);
-        grade
+
     }
 
     fn get_if_rlo_pass(&self, grade: f32) -> Result<f32, f32> {

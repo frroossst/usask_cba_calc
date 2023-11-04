@@ -4,7 +4,7 @@ use super::clo::CLO;
 /// Type B = 70% minimum
 /// Type B+ = 50% minimum
 /// Type C = no pass requirement
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum DifficultyType {
     TypeA,
     TypeB,
