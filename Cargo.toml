@@ -10,16 +10,6 @@ repository = "https://github.com/frroossst/usask_cba_calc"
 [dependencies]
 ansi_term = "0.12.1"
 
-[dependencies.tokio]
-version = "1.33.0"
-features = [ "io-std", "time", "rt-multi-thread", "macros", "io-util" ]
-
-
 [dependencies.serde_json]
 version = "1.0.107"
-
-[profile.release]
-opt-level = "z"
-lto = true
-strip = true
 

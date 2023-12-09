@@ -1,13 +1,9 @@
 use usask_cba_calc::ingest::*;
-use usask_cba_calc::schema::*;
-use usask_cba_calc::misc::*;
-use tokio::time::Duration;
 use ansi_term::Color;
 
 
 
-#[tokio::main]
-async fn main() -> () {
+fn main() -> () {
     let src = r#"{
     "SampleTest" : {
         "CLOs": {

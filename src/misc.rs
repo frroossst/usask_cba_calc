@@ -1,25 +1,3 @@
-use tokio::io::{self, AsyncReadExt};
-use tokio::time::{self, Duration};
-
-pub async fn read_stdin_with_timeout(timeout: Duration) -> Result<String, io::Error> {
-    let mut stdin = io::stdin();
-    let mut buffer = String::new();
-
-    let read_future = stdin.read_to_string(&mut buffer);
-    let timeout_future = time::sleep(timeout);
-
-    tokio::select! {
-        result = read_future => {
-            result?;
-            Ok(buffer)
-        }
-        _ = timeout_future => {
-            Err(io::Error::new(io::ErrorKind::TimedOut, 
-                    format!("no input received, waited for {} ms", timeout.as_millis())))
-        }
-    }
-}
-
 pub fn print_help_message() {
     eprintln!("Usage: usask-cba-calc [file_path]\n");
     eprintln!("Arguments:");
