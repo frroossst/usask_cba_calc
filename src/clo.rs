@@ -88,3 +88,29 @@ impl PartialOrd for CLO {
         Some(self.cmp(other))
     }
 }
+
+#[cfg(test)]
+mod clo_tests {
+
+    use super::*;
+
+    #[test]
+    fn test_clo_sort() {
+        let clo0 = CLO::new(0.0, DifficultyType::TypeA, 0.0);
+        let clo1 = CLO::new(1.0, DifficultyType::TypeA, 0.0);
+        let clo2 = CLO::new(2.0, DifficultyType::TypeA, 0.0);
+        let clo3 = CLO::new(3.0, DifficultyType::TypeA, 0.0);
+        let clo4 = CLO::new(4.0, DifficultyType::TypeA, 0.0);
+
+        let mut clo_vec = vec![&clo4, &clo2, &clo3, &clo1, &clo0];
+
+        clo_vec.sort();
+
+        assert_eq!(clo_vec[0].name, 0.0);
+        assert_eq!(clo_vec[1].name, 1.0);
+        assert_eq!(clo_vec[2].name, 2.0);
+        assert_eq!(clo_vec[3].name, 3.0);
+        assert_eq!(clo_vec[4].name, 4.0);
+    }
+
+}
