@@ -82,10 +82,14 @@ impl PartialEq for CLO {
 }
 
 impl PartialOrd for CLO {
+    #[cfg(feature = "segfault")]
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        // self.name.partial_cmp(&other.name)
-        // ! causes segfault
         Some(self.cmp(other))
+    }
+
+    #[cfg(not(feature = "segfault"))]
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        self.name.partial_cmp(&other.name)
     }
 }
 

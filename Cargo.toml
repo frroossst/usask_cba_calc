@@ -13,3 +13,6 @@ ansi_term = "0.12.1"
 [dependencies.serde_json]
 version = "1.0.107"
 
+[features]
+segfault = []
+
