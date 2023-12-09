@@ -1,6 +1,6 @@
+use super::rlo::RLO;
 use super::subject::DifficultyType;
 use std::cmp::Ordering;
-use super::rlo::RLO;
 
 #[derive(Debug, Clone)]
 pub struct CLO {
@@ -13,7 +13,13 @@ pub struct CLO {
 
 impl CLO {
     pub fn new(name: f32, difficulty_type: DifficultyType, weight_in_subject: f32) -> Self {
-        CLO { name, difficulty_type, rlos: Vec::new(), weight_in_subject, current_grade: Err(f32::NAN) }
+        CLO {
+            name,
+            difficulty_type,
+            rlos: Vec::new(),
+            weight_in_subject,
+            current_grade: Err(f32::NAN),
+        }
     }
 
     pub fn add_rlo(&mut self, name: f32, weight_in_clo: f32) {
@@ -44,20 +50,18 @@ impl CLO {
             DifficultyType::TypeB => {
                 if grade < 75.0 {
                     Err(grade)
-                }
-                else {
+                } else {
                     Ok(grade)
                 }
             }
             DifficultyType::TypeBPlus => {
                 if grade < 50.0 {
                     Err(grade)
-                }
-                else {
+                } else {
                     Ok(grade)
                 }
             }
-            _ => Ok(grade)
+            _ => Ok(grade),
         }
     }
 
@@ -78,7 +82,6 @@ impl PartialEq for CLO {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
     }
-
 }
 
 impl PartialOrd for CLO {
@@ -116,5 +119,4 @@ mod clo_tests {
         assert_eq!(clo_vec[3].name, 3.0);
         assert_eq!(clo_vec[4].name, 4.0);
     }
-
 }

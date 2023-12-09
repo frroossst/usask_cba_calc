@@ -21,7 +21,11 @@ pub struct Subject {
 
 impl Subject {
     pub fn new(name: String) -> Subject {
-        Subject { name, clos: Vec::new(), current_grade: Err(f32::NAN) }
+        Subject {
+            name,
+            clos: Vec::new(),
+            current_grade: Err(f32::NAN),
+        }
     }
 
     pub fn add_clo(&mut self, name: f32, difficulty_type: DifficultyType, weight_in_subject: f32) {
@@ -56,4 +60,3 @@ impl Subject {
         }
     }
 }
-

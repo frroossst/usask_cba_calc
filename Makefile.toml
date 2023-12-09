@@ -1,0 +1,34 @@
+[env]
+MIRIFLAGS = "-Zmiri-disable-isolation -Zmiri-disable-stacked-borrows -Zmiri-report-progress"
+
+[tasks.default]
+alias = "help"
+
+[tasks.help]
+script = [
+    """
+    printf "faulttest: run tests with segfaults enabled\n"
+    printf "nofaulttest: run tests with segfaults disabled\n"
+    printf "nofaultrun: run program with segfaults disabled\n"
+    printf "faultrun: run program with segfaults enabled\n"
+    """
+]
+
+
+[tasks.faulttest]
+command = "cargo"
+args = ["miri", "nextest", "run", "--features", "segfault"]
+
+[tasks.nofaulttest]
+command = "cargo"
+args = ["miri", "nextest", "run"]
+
+[tasks.nofaultrun]
+command = "cargo"
+args = ["miri", "run"]
+
+[tasks.faultrun]
+command = "cargo"
+args = ["miri", "run", "--features", "segfault"]
+
+

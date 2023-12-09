@@ -6,7 +6,7 @@ use std::cmp::Ordering;
 pub struct RLO {
     pub name: f32,
     difficulty_type: DifficultyType,
-    /// The assignment grades are individual 
+    /// The assignment grades are individual
     /// percentages as entered by the user
     assignment_grades: Vec<f32>,
     weight_in_clo: f32,
@@ -15,7 +15,13 @@ pub struct RLO {
 
 impl RLO {
     pub fn new(name: f32, difficulty_type: DifficultyType, weight_in_clo: f32) -> Self {
-        RLO { name, difficulty_type, assignment_grades: Vec::new(), weight_in_clo, current_grade: Err(f32::NAN) }
+        RLO {
+            name,
+            difficulty_type,
+            assignment_grades: Vec::new(),
+            weight_in_clo,
+            current_grade: Err(f32::NAN),
+        }
     }
 
     pub fn add_assignment_grade(&mut self, grade: f32) {
@@ -48,7 +54,6 @@ impl RLO {
             self.current_grade = self.get_if_rlo_pass(grade);
             grade
         }
-
     }
 
     fn get_if_rlo_pass(&self, grade: f32) -> Result<f32, f32> {
@@ -56,20 +61,18 @@ impl RLO {
             DifficultyType::TypeB => {
                 if grade < 75.0 {
                     Err(grade)
-                }
-                else {
+                } else {
                     Ok(grade)
                 }
             }
             DifficultyType::TypeBPlus => {
                 if grade < 50.0 {
                     Err(grade)
-                }
-                else {
+                } else {
                     Ok(grade)
                 }
             }
-            _ => Ok(grade)
+            _ => Ok(grade),
         }
     }
 
@@ -90,7 +93,6 @@ impl PartialEq for RLO {
     fn eq(&self, other: &Self) -> bool {
         self.name == other.name
     }
-
 }
 
 impl PartialOrd for RLO {

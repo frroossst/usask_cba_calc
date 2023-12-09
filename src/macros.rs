@@ -10,4 +10,3 @@ macro_rules! weighted_rlo_grade {
         ($current_grade * 0.6) + ($recent_grade * 0.4)
     };
 }
-

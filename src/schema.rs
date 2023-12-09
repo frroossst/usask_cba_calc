@@ -1,10 +1,12 @@
 use serde_json::{Map, Value};
-use std::io::{self, Write};
 use std::fs::File;
+use std::io::{self, Write};
 
 fn input() -> String {
     let mut input_buffer = String::new();
-    io::stdin().read_line(&mut input_buffer).expect("Failed to read line");
+    io::stdin()
+        .read_line(&mut input_buffer)
+        .expect("Failed to read line");
     return input_buffer.trim().to_string();
 }
 
@@ -29,7 +31,10 @@ pub fn construct_schema() {
         let mut clos = Map::new();
 
         loop {
-            prompt("Enter CLO name (1.1, 3.2 etc.) or 'q' to go back to subjects: ", Some(&subject_name));
+            prompt(
+                "Enter CLO name (1.1, 3.2 etc.) or 'q' to go back to subjects: ",
+                Some(&subject_name),
+            );
             let clo_name = input();
             if clo_name == "q" {
                 break;
@@ -38,47 +43,65 @@ pub fn construct_schema() {
             let mut rlos = Map::new();
 
             loop {
-                prompt("Enter RLO name (1.1, 3.2 etc.) or 'q' to go back to CLOs: ", Some(&clo_name));
+                prompt(
+                    "Enter RLO name (1.1, 3.2 etc.) or 'q' to go back to CLOs: ",
+                    Some(&clo_name),
+                );
                 let rlo_name = input();
                 if rlo_name == "q" {
                     break;
                 }
 
                 rlos.insert(rlo_name.clone(), Value::Object(Map::new()));
-                rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap()
+                rlos.get_mut(&rlo_name)
+                    .unwrap()
+                    .as_object_mut()
+                    .unwrap()
                     .insert(
                         "weightage".to_string(),
-                        Value::Number(serde_json::Number::from_f64(0.0)
-                                        .expect("Expected input to be a f32")
-                    )
-                );
-                rlos.get_mut(&rlo_name).unwrap().as_object_mut().unwrap()
-                    .insert(
-                        "assignments".to_string(),
-                        Value::Array(vec![]
-                    )
-                );
+                        Value::Number(
+                            serde_json::Number::from_f64(0.0).expect("Expected input to be a f32"),
+                        ),
+                    );
+                rlos.get_mut(&rlo_name)
+                    .unwrap()
+                    .as_object_mut()
+                    .unwrap()
+                    .insert("assignments".to_string(), Value::Array(vec![]));
             }
 
             clos.insert(clo_name.clone(), Value::Object(Map::new()));
-            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap()
-                .insert("difficulty_type".to_string(), Value::String(String::from("")));
-            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap()
+            clos.get_mut(&clo_name)
+                .unwrap()
+                .as_object_mut()
+                .unwrap()
                 .insert(
-                    "weightage".to_string(), 
-                    Value::Number(serde_json::Number::from_f64(0.0)
-                                    .expect("Expected input to be a f32")
-                )
-            );
-            clos.get_mut(&clo_name).unwrap().as_object_mut().unwrap()
+                    "difficulty_type".to_string(),
+                    Value::String(String::from("")),
+                );
+            clos.get_mut(&clo_name)
+                .unwrap()
+                .as_object_mut()
+                .unwrap()
                 .insert(
-                    "RLOs".to_string(), 
-                    Value::Object(rlos)
-            );
+                    "weightage".to_string(),
+                    Value::Number(
+                        serde_json::Number::from_f64(0.0).expect("Expected input to be a f32"),
+                    ),
+                );
+            clos.get_mut(&clo_name)
+                .unwrap()
+                .as_object_mut()
+                .unwrap()
+                .insert("RLOs".to_string(), Value::Object(rlos));
         }
 
         schema.insert(subject_name.clone(), Value::Object(Map::new()));
-        schema.get_mut(&subject_name).unwrap().as_object_mut().unwrap()
+        schema
+            .get_mut(&subject_name)
+            .unwrap()
+            .as_object_mut()
+            .unwrap()
             .insert("CLOs".to_string(), Value::Object(clos));
     }
 
@@ -100,4 +123,3 @@ pub fn construct_schema() {
     }
     serde_json::to_writer_pretty(fobj, &schema).unwrap();
 }
-

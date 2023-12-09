@@ -9,4 +9,3 @@ pub fn print_help_message() {
     eprintln!("\n{}\n", env!("CARGO_PKG_DESCRIPTION"));
     eprintln!("usask-cba-calc v{}", env!("CARGO_PKG_VERSION"));
 }
-

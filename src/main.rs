@@ -1,7 +1,5 @@
-use usask_cba_calc::ingest::*;
 use ansi_term::Color;
-
-
+use usask_cba_calc::ingest::*;
 
 fn main() -> () {
     let src = r#"{
@@ -72,7 +70,8 @@ fn main() -> () {
         }
     }
 }
-"#.to_string();
+"#
+    .to_string();
 
     let subjects = populate_json_data(parse_json_data(src));
 
@@ -85,9 +84,17 @@ fn main() -> () {
         if subject_grade <= 50.0 {
             println!("{}: {}", i.name, Color::Red.bold().paint("FAIL"));
         } else if subject_grade <= 60.0 {
-            println!("{}: {}", i.name, Color::Yellow.paint(format!("{:.2}", subject_grade)));
+            println!(
+                "{}: {}",
+                i.name,
+                Color::Yellow.paint(format!("{:.2}", subject_grade))
+            );
         } else if subject_grade <= 100.0 {
-            println!("{}: {}", i.name, Color::Green.paint(format!("{:.2}", subject_grade)));
+            println!(
+                "{}: {}",
+                i.name,
+                Color::Green.paint(format!("{:.2}", subject_grade))
+            );
         } else {
             println!("{}: {}", i.name, subject_grade);
         }
@@ -98,8 +105,11 @@ fn main() -> () {
             match c.current_grade {
                 Ok(v) => println!(" {:.2}", v),
                 Err(e) => {
-                    println!(" {}", Color::Red.italic().paint(format!("{:.2}", e.to_string())));
-                },
+                    println!(
+                        " {}",
+                        Color::Red.italic().paint(format!("{:.2}", e.to_string()))
+                    );
+                }
             };
             for r in c.get_rlos() {
                 let rlo_header = format!("    [RLO {}]:", r.name);
@@ -114,6 +124,5 @@ fn main() -> () {
             }
         }
         println!("----------------------------------------");
-
     }
 }
