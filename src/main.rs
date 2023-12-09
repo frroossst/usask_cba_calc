@@ -8,32 +8,77 @@ use ansi_term::Color;
 
 #[tokio::main]
 async fn main() -> () {
-    let args: Vec<String> = std::env::args().collect();
-
-    let subjects = if args.len() == 2 {
-        if args.last().unwrap() == "-h" || args.last().unwrap() == "--help" {
-            print_help_message();
-            std::process::exit(0);
-        } else if args.last().unwrap() == "-s" || args.last().unwrap() == "--schema" {
-            construct_schema();
-            std::process::exit(0);
+    let src = r#"{
+    "SampleTest" : {
+        "CLOs": {
+            "0.1" : {
+                "difficulty_type": "B",
+                "weightage": 100.0,
+                "RLOs": {
+                    "0.2": {
+                        "weightage": 100.0,
+                        "assignments": [100, 0]
+                    }
+                }
+            }
         }
-            // If exactly one argument is provided, treat it as a file path.
-            let file_path = &args[1];
-            read_and_parse_file(file_path.to_string())
-        } else {
-            // If no or more than one argument is provided, read from stdin (piped input).
-            let input_timeout = Duration::from_millis(2750);
-            let input_data = match read_stdin_with_timeout(input_timeout).await {
-                Ok(v) => v,
-                Err(e) => {
-                    eprintln!("{}", Color::Yellow.underline().paint(format!("{}", e)));
-                    print_help_message();
-                    std::process::exit(124);
-                },
-            };
-            populate_json_data(parse_json_data(input_data))
-        };
+    },
+    "Subject1": {
+        "CLOs": {
+            "1.1": {
+                "difficulty_type": "B",
+                "weightage": 20.0,
+                "RLOs": {
+                    "1.3": {
+                        "weightage": 50.0,
+                        "assignments": [95, 90, 85]
+                    },
+                    "3.3": {
+                        "weightage": 50.0,
+                        "assignments": [80, 75]
+                    }
+                }
+            },
+            "1.2": {
+                "difficulty_type": "B+",
+                "weightage": 80.0,
+                "RLOs": {
+                    "1.1": {
+                        "weightage": 100.0,
+                        "assignments": [95, 90, 85]
+                    }
+                }
+            }
+        }
+    },
+    "Subject2": {
+        "CLOs": {
+            "2.1": {
+                "difficulty_type": "A",
+                "weightage": 0.0,
+                "RLOs": {
+                    "2.1": {
+                        "weightage": 100.0,
+                        "assignments": [12]
+                    }
+                }
+            },
+            "1.2": {
+                "difficulty_type": "B+",
+                "weightage": 100.0,
+                "RLOs": {
+                    "2.2": {
+                        "weightage": 100.0,
+                        "assignments": [95, 0, 0]
+                    }
+                }
+            }
+        }
+    }
+}
+"#.to_string();
+
+    let subjects = populate_json_data(parse_json_data(src));
 
     let populated_subjects = subjects.unwrap();
 
