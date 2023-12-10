@@ -1,17 +1,12 @@
 [package]
-name = "usask_cba_calc"
+name = "minimal_repoduceable"
+version = "0.1.0"
 edition = "2021"
-version = "0.4.2"
-authors = ["Adhyan H. <adhyanpatel@gmail.com>"]
-description = "cli tool to calculate usask's first year engineering cba grades"
-license = "MIT"
-repository = "https://github.com/frroossst/usask_cba_calc"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ansi_term = "0.12.1"
 
-[dependencies.serde_json]
-version = "1.0.107"
 
 [features]
 segfault = []

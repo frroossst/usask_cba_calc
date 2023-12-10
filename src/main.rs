@@ -1,128 +1,84 @@
-use ansi_term::Color;
-use usask_cba_calc::ingest::*;
 
-fn main() -> () {
-    let src = r#"{
-    "SampleTest" : {
-        "CLOs": {
-            "0.1" : {
-                "difficulty_type": "B",
-                "weightage": 100.0,
-                "RLOs": {
-                    "0.2": {
-                        "weightage": 100.0,
-                        "assignments": [100, 0]
-                    }
-                }
-            }
-        }
-    },
-    "Subject1": {
-        "CLOs": {
-            "1.1": {
-                "difficulty_type": "B",
-                "weightage": 20.0,
-                "RLOs": {
-                    "1.3": {
-                        "weightage": 50.0,
-                        "assignments": [95, 90, 85]
-                    },
-                    "3.3": {
-                        "weightage": 50.0,
-                        "assignments": [80, 75]
-                    }
-                }
-            },
-            "1.2": {
-                "difficulty_type": "B+",
-                "weightage": 80.0,
-                "RLOs": {
-                    "1.1": {
-                        "weightage": 100.0,
-                        "assignments": [95, 90, 85]
-                    }
-                }
-            }
-        }
-    },
-    "Subject2": {
-        "CLOs": {
-            "2.1": {
-                "difficulty_type": "A",
-                "weightage": 0.0,
-                "RLOs": {
-                    "2.1": {
-                        "weightage": 100.0,
-                        "assignments": [12]
-                    }
-                }
-            },
-            "1.2": {
-                "difficulty_type": "B+",
-                "weightage": 100.0,
-                "RLOs": {
-                    "2.2": {
-                        "weightage": 100.0,
-                        "assignments": [95, 0, 0]
-                    }
-                }
-            }
-        }
+#[derive(Debug, Clone)]
+enum DifficultyType {
+    Easy,
+    Medium,
+    Hard,
+}
+
+#[derive(Debug, Clone)]
+pub struct CLO {
+    pub name: f32,
+//    difficulty_type: DifficultyType,
+//    rlos: Vec<RLO>,
+//    weight_in_subject: f32,
+//    pub current_grade: Result<f32, f32>,
+}
+impl Ord for CLO {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.partial_cmp(other).unwrap()
     }
 }
-"#
-    .to_string();
 
-    let subjects = populate_json_data(parse_json_data(src));
+impl Eq for CLO {}
 
-    let populated_subjects = subjects.unwrap();
-
-    for mut i in populated_subjects.into_iter() {
-        let subject_grade = i.get_subject_grade();
-        // println!("{:#?}", i);
-
-        if subject_grade <= 50.0 {
-            println!("{}: {}", i.name, Color::Red.bold().paint("FAIL"));
-        } else if subject_grade <= 60.0 {
-            println!(
-                "{}: {}",
-                i.name,
-                Color::Yellow.paint(format!("{:.2}", subject_grade))
-            );
-        } else if subject_grade <= 100.0 {
-            println!(
-                "{}: {}",
-                i.name,
-                Color::Green.paint(format!("{:.2}", subject_grade))
-            );
-        } else {
-            println!("{}: {}", i.name, subject_grade);
-        }
-
-        for c in i.get_clos() {
-            let clo_header = format!("[CLO {}]:", c.name);
-            print!("{}", Color::White.italic().paint(clo_header));
-            match c.current_grade {
-                Ok(v) => println!(" {:.2}", v),
-                Err(e) => {
-                    println!(
-                        " {}",
-                        Color::Red.italic().paint(format!("{:.2}", e.to_string()))
-                    );
-                }
-            };
-            for r in c.get_rlos() {
-                let rlo_header = format!("    [RLO {}]:", r.name);
-                print!("{}", Color::White.italic().paint(rlo_header));
-                match r.current_grade {
-                    Ok(v) => println!(" {:.2}", v),
-                    Err(e) => {
-                        let rounded_grade = format!("{:.2}", e.to_string());
-                        println!(" {}", Color::Red.italic().paint(rounded_grade));
-                    }
-                };
-            }
-        }
-        println!("----------------------------------------");
+impl PartialEq for CLO {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
     }
+}
+
+impl PartialOrd for CLO {
+    #[cfg(feature = "segfault")]
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+
+    #[cfg(not(feature = "segfault"))]
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        self.name.partial_cmp(&other.name)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_clo() {
+        let clo = CLO {
+            name: 1.0,
+//            difficulty_type: DifficultyType::Easy,
+//            weight_in_subject: 1.0,
+//            current_grade: Ok(1.0),
+        };
+        let clo2 = CLO {
+            name: 2.0,
+//            difficulty_type: DifficultyType::Easy,
+//            weight_in_subject: 1.0,
+//            current_grade: Ok(1.0),
+        };
+        let clo3 = CLO {
+            name: 3.0,
+//            difficulty_type: DifficultyType::Easy,
+//            weight_in_subject: 1.0,
+//            current_grade: Ok(1.0),
+        };
+        let clo4 = CLO {
+            name: 4.0,
+//            difficulty_type: DifficultyType::Easy,
+//            weight_in_subject: 1.0,
+//            current_grade: Ok(1.0),
+        };
+
+        let mut vec = vec![clo.clone(), clo2.clone(), clo3.clone(), clo4.clone()];
+        vec.sort();
+    }
+}
+
+
+
+
+fn main() {
+    println!("Hello, world!");
 }
