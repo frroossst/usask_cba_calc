@@ -1,4 +1,3 @@
-
 #[derive(Debug, Clone)]
 enum DifficultyType {
     Easy,
@@ -15,8 +14,9 @@ pub struct CLO {
 //    pub current_grade: Result<f32, f32>,
 }
 impl Ord for CLO {
+    
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.partial_cmp(other).unwrap()
+        self.name.partial_cmp(&other.name).unwrap()
     }
 }
 
@@ -29,16 +29,12 @@ impl PartialEq for CLO {
 }
 
 impl PartialOrd for CLO {
-    #[cfg(feature = "segfault")]
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
-
-    #[cfg(not(feature = "segfault"))]
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         self.name.partial_cmp(&other.name)
     }
 }
+
+
 
 #[cfg(test)]
 mod tests {
@@ -76,9 +72,23 @@ mod tests {
     }
 }
 
-
-
-
 fn main() {
     println!("Hello, world!");
+//    unsafe { backtrace_on_stack_overflow::enable() };
+
+    let clo = CLO {
+            name: 1.0,
+        };
+        let clo2 = CLO {
+            name: 2.0,
+        };
+        let clo3 = CLO {
+            name: 3.0,
+        };
+        let clo4 = CLO {
+            name: 4.0,
+        };
+
+        let mut vec = vec![clo.clone(), clo2.clone(), clo3.clone(), clo4.clone()];
+        vec.sort()
 }
